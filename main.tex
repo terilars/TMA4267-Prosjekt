@@ -1,0 +1,92 @@
+\documentclass{article}
+
+%DOKUMENTSTRUKTUR
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{multicol}
+\usepackage{parskip }
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ left=25mm,
+ right=25mm,
+ top=25mm,
+ bottom=25mm
+ }
+%FIGURPAKKER
+\usepackage{graphicx}
+\graphicspath{{figures/}}
+\usepackage{float}
+ 
+%LAYOUT-PAKKER
+%\usepackage{fancyhdr}
+%\pagestyle{fancy}
+%REFERANSEPAKKER
+\usepackage{csquotes}
+\usepackage[
+backend=biber,
+style=authoryear,
+sorting=ynt]{biblatex}
+\addbibresource{my.bib}
+
+%MATTEPAKKER
+\usepackage{mathtools,amsmath}
+
+%KODEPAKKER
+\usepackage{listings}
+\usepackage{color}
+%\usepackage{xcolor} 
+
+%TITTEL OG SAMMENDRAD
+\title{TMA4267 Project}
+\author{Candidate number 10047}
+\date{\today}
+\begin{document}
+\maketitle
+\vspace{20mm} %5mm vertical space
+\begin{abstract}
+\input{sections/abstract.tex}
+\end{abstract}
+\vspace{20mm} %5mm vertical space
+
+%SEKSJONER
+\begin{multicols}{2}
+\section{Choice of assignment}
+\input{sections/assignment.tex}
+
+\section{Factors and levels}
+\input{sections/factors.tex}
+
+\section{The response variable}
+\input{sections/response.tex}
+
+\section{Choice of design}
+\input{sections/design.tex}
+
+\section{Implementation}
+\input{sections/implementation.tex}
+
+\section{Analysis of data}
+\input{sections/analysis.tex}
+
+\section{Conclusion and recommendations}
+\input{sections/conclusion.tex}
+\end{multicols}
+
+%REFERANSEDEL
+\medskip
+\printbibliography[type=book,heading=subbibliography,title={References}]
+\printbibliography[nottype=book,heading=subbibliography,title={Other sources}]
+\clearpage
+
+%APPENDIKS
+\appendix
+\section{Code}
+\input{sections/app_code.tex}
+
+\clearpage
+
+\section{SJEKKLISTE}
+\input{sections/app_sjekkliste.tex}
+
+\end{document}

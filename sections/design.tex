@@ -1,0 +1,45 @@
+\textit{2 k factorial,
+2 k-p fractional factorial or other design?
+Desired resolution of the design?
+Is it necessary or desirable to use a blocked design?
+Is it necessary or desirable with replicates?}
+
+The design of the experiment are largely following the guidance from the design note \parencite[]{tyssedal} and the lectures \parencite[]{lectures}. Instead of citing the statements each, this is given as a preamble MUMBO.
+
+In accordance with customers, a full $2^3$ factorial experiment is decided upon. The linear progression model is thus
+
+\begin{multline}
+    Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 X_3 + \\
+    \beta_{12} X_{12} + 
+    \beta_{13} X_{13} + \beta_{23} X_{23} + \\ \beta_{123} X_{123} + \epsilon
+\end{multline}
+
+Table \ref{table:design} shows the design plan including factors and levels in standard form. Since randomization is necessary, we let R do that job. Soon we will see the experiment randomized and replicated.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ |c | c c c c c c c | } 
+ \hline
+ Run & A & B & C & AB & AC & BC & ABC \\ 
+ \hline
+ 1 & - & - & - & + & + & + & -  \\
+ 2 & + & - & - & - & - & + & +  \\
+ 3 & - & + & - & - & - & - & +  \\
+ 4 & + & + & - & + & - & - & -  \\
+ 5 & - & - & + & + & - & - & +  \\
+ 6 & + & - & + & - & + & - & -  \\
+ 7 & - & + & + & - & - & + & -  \\
+ 8 & + & + & + & + & + & + & +  \\
+ \hline
+   & $x_1$ & $x_2$ & $x_3$ & $x_{12}$ & $x_{13}$  & $x_{23}$ & $x_{123}$  \\
+ \hline
+\end{tabular}
+\caption{Design matrix with ortogonal columns}
+\label{table:design}
+\end{table}
+
+A fractional factorial design would in this case be superfluous. The very nature of the fractional factorial design is to save cost and effort \parencite[20]{tyssedal}, by executing $2^{k-1} \equiv 2^{3-1} = 2^2 = 4$ runs. In our assignment we are explicitly told to perform at least 16 observations, thereby rendering the fractional factorial design a circular argument. 
+
+Blocking considered, this will not be done. The main reason for blocking the experiment would be that the pre-heated nails would drop in temperature during the experiment. However, this is also to be expected during everyday work.It is unrealistic that the nail heater will be available at all time and place. Therefore it is decided to keep the nails in a isolated container, and not block the experiment. In addition to the practical approach to blocking, it seems that the package used to run the experiment in R, only allows blocking in fractional factorial mode. Also, the blocking factor, in this case B, "should be of no interest itself" \parencite[10]{frf2}
+
+It is necessary to replicate the experiment in order to ensure model inpendent estimates of the variance \parencite[11]{tyssedal}.

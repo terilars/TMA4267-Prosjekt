@@ -1,0 +1,46 @@
+\textit{ Randomization.
+Describe any problems with the implementation (maybe the randomization was not followed?)
+Is each experiments a genuine run replicate, that is reflects the total variability of the experiment. (each trial should be a performed independently and constitute a full trial)}
+
+Table \ref{table:random} shows the randomized run order given by R by running the FrF2 command with $randomize=TRUE$. The leftmost column shows the run order as the experiment is supposed to be done. The second column shows the run number from the design plan. Since the experiment is replicated, the 8 replicate runs have the same sign as the 8 first. The interaction columns are not included in this table, as the table will be firstmost used as an experimental guide.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ |c|c|ccc| } 
+ \hline
+ Run & Std. run & A & B & C \\ 
+    \hline
+    1 & 8.1 & + & + & +  \\
+    2 & 5.1 & - & - & +  \\
+    3 & 1.1 & - & - & -  \\
+    4 & 4.1 & + & + & -  \\
+    5 & 7.1 & - & + & +  \\
+    6 & 2.1 & + & - & -  \\
+    7 & 3.1 & - & + & -  \\
+    8 & 6.1 & + & - & +  \\
+    9 & 6.2 & + & - & +  \\
+    10 & 5.2 & - & - & +  \\
+    11 & 8.2 & + & + & +  \\
+    12 & 3.2 & - & + & -  \\
+    13 & 1.2 & - & - & -  \\
+    14 & 7.2 & - & + & +  \\
+    15 & 2.2 & + & - & -  \\
+    16 & 4.2 & + & + & -  \\
+     \hline
+\end{tabular}
+\caption{Table showing run order with level combinations}
+\label{table:random}
+\end{table}
+
+One problem showed up when running the FrF2 with randomizing. Each time the script was run, the run orders were changed. To fix that problem, one randomiziation was written to a .Rda-file, in a separate script. Then the main script could load the randomized experiment for analysis every time without changing the very base settings for the experiment. 
+
+The randomization was followed specifically, assumed that the test sheet was correctly copied from the R randomization.
+
+Cooling of the pre-heated nails would be expected as in real-life situations.The temperature gradient was not measured quantitatively. 
+
+After the experiment was finished, the video log was examined. It turned out that the camera did not quite catch the rapid movement of the hammer. Still, it was possible to navigate the frames and quite accurately snip the clip at the given start and stop points.
+
+Perhaps the most serious flaw of the experiment would be the human factor behind the hammer. One needs to expect a considerable learning factor at first, i.e the more attempts, the less variability in the response. That way an experienced carpenter should be used. For instance, one attempt were rejected during one run, because the nail was skewed and not properly fastened to the wood. 
+
+As far as practically possible, each run was a genuine run replicate. Each trial is very brief in time domain, but there is hardly reason to believe that the runs are not genuine replicates. Modeling real-life carpentry, it is expected that one has no long breaks between each nail. 
+

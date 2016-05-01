@@ -1,0 +1,94 @@
+Calculation of effects and assessment of statistical significance.
+Check the assumptions. Important: residual plots!
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ |c|ccc|c| } 
+ \hline
+ Run & A & B & C & y \\ 
+    \hline
+    1 & + & + & + & 2.0  \\
+    2 & - & - & + & 6.2  \\
+    3 & - & - & - & 3.4  \\
+    4 & + & + & - & 2.6  \\
+    5 & - & + & + & 3.9  \\
+    6 & + & - & - & 3.3  \\
+    7 & - & + & - & 2.9  \\
+    8 & + & - & + & 2.0  \\
+    9 & + & - & + & 2.1  \\
+    10 & - & - & + & 2.6  \\
+    11 & + & + & + & 1.9  \\
+    12 & - & + & - & 2.7  \\
+    13 & - & - & - & 2.9  \\
+    14 & - & + & + & 4.6  \\
+    15 & + & - & - & 2.3  \\
+    16 & + & + & - & 2.2  \\
+     \hline
+\end{tabular}
+\caption{Table showing runs, level combinations and response}
+\label{table:experiment}
+\end{table}
+
+As discussed in \parencite{lectures}, for linear regression, the five fundamental assumptions are normality, independent errors, constant variance and linearity. CHECK!
+
+\subsection*{Asumption of normality}
+Here, normality refers to the distribution of the residuals.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{histogram_default}
+    \caption{Histogram of residuals from full modelwith default settings}
+    \label{fig:histogram_default}
+\end{figure}
+
+Figure \ref{fig:histogram_default} shows a default histogram of the residuals from the full model $Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 X_3 + \beta_{12} X_{12} + \beta_{13} X_{13} + \beta_{23} X_{23} + \beta_{123} X_{123} + \epsilon$ including interactions with all three variables.At first, the residuals seem perfectly normally distributed. However, with only 16 observations, the histograms are sensitive to bon size, as we will see in Figure \ref{fig:histogram}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{histogram}
+    \caption{Histogram of residuals from full model}
+    \label{fig:histogram}
+\end{figure}
+
+After setting the numbers of bins in R to 30, a different picture shows. Figure \ref{fig:histogram} clearly shows that the residuals deviate from the normal distributions at both tails. Thus, the assumption of normally distributed residuals (estimated errors) are violated. To confirm this, we use the Q-Q plot as shown in figure \ref{fig:qqplot}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{qqplot}
+    \caption{Q-Q plot of residuals vs. theoretical}
+    \label{fig:qqplot}
+\end{figure}
+
+Figure \ref{fig:qqplot} confirms the picture from Figure \ref{fig:histogram}.The residuals are more or less normally distributed around mean zero, but with tails deviating from the normal. Yet confirming violating the error normality assumption. What can be done to "rescue" the experiment, without retaking? 
+
+Instead of adjusting the model parameters, let us try to evaluate 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{boxcox}
+    \caption{Box-Cox plot of model}
+    \label{fig:boxcox}
+\end{figure}
+
+
+So we have discovered that the first fitted model did not accomodate normality assumptions. What about the error variance?
+
+\subsection*{Assumption of error variance}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{studentized}
+    \caption{Studentized residuals vs fitted values from full model}
+    \label{fig:studentized}
+\end{figure}
+
+Studying figure \ref{fig:studentized}, a clear structure appears. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{order}
+    \caption{Residuals in run order}
+    \label{fig:order}
+\end{figure}
+
+One obviously wrong model assumption was not practicing the experiment beforehand. As seen from the response variable $y_2 = 6.2 s$, it is clearly an outlier compared to the later trials.

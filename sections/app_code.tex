@@ -1,0 +1,101 @@
+\lstset{ %
+  language=R,                     % the language of the code
+  basicstyle=\footnotesize,       % the size of the fonts that are used for the code
+  numbers=left,                   % where to put the line-numbers
+  numberstyle=\tiny\color{black},  % the style that is used for the line-numbers
+  stepnumber=1,                   % the step between two line-numbers. If it's 1, each line
+                                  % will be numbered
+  numbersep=5pt,                  % how far the line-numbers are from the code
+  backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+  showspaces=false,               % show spaces adding particular underscores
+  showstringspaces=false,         % underline spaces within strings
+  showtabs=false,                 % show tabs within strings adding particular underscores
+  frame=single,                   % adds a frame around the code
+  rulecolor=\color{black},        % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. commens (green here))
+  tabsize=2,                      % sets default tabsize to 2 spaces
+  captionpos=b,                   % sets the caption-position to bottom
+  breaklines=true,                % sets automatic line breaking
+  breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
+  title=\lstname,                 % show the filename of files included with \lstinputlisting;
+                                  % also try caption instead of title
+  keywordstyle=\color{blue},      % keyword style
+  commentstyle=\color{green},   % comment style
+  stringstyle=\color{blue},      % string literal style
+  escapeinside={\%*}{*)},         % if you want to add a comment within your code
+  morekeywords={*,...}            % if you want to add more keywords to the set
+} 
+\lstlistoflistings
+
+\begin{lstlisting}[caption="Initial script for randomization"]
+# calling library and write randomized experiment to R data file
+library(FrF2)
+plan <- FrF2(nruns=16,nfactors=3,alias.info=2,randomize=TRUE)
+plan
+save(plan,file="plan.Rda")
+plan
+rm(plan)
+\end{lstlisting}
+
+\begin{lstlisting}[caption="Main code"]
+# loading randomized design of experiment from R data file
+# Without saving the randomization, the experiment would be 
+# near impossible to reproduce
+library(FrF2)
+library(MASS)
+require(graphics)
+load("plan.Rda")
+plan
+plan2 <-plan
+summary(plan)
+
+#adding response vector Y to the plan 
+# observational data
+y <- c(2.0,6.2,3.4,2.6,3.9,3.3,2.9,2.0,2.1,2.6,1.9,2.7,2.9,4.6,2.3,2.2)
+ymod <- y^(-3.6)
+plan <- add.response(plan,ymod)
+plan
+
+library(leaps)
+regfitF=regsubsets(ymod~.,data=plan,method="forward")
+sumregF <- summary(regfitF)
+sumregF # best model includes all factors 
+
+# regressing the plan including transformed 
+# response vector fourth root
+model1 <- lm(ymod~A+B+C+A:C+A:B,data=plan)
+summary(model1)
+plot(model1$fitted,rstudent(model1),pch=20)
+plot(c(1:16),model1$residuals)
+qqnorm(rstudent(model1),pch=20)
+qqline(rstudent(model1))
+boxcox(model1,lambda = seq(-5, 5))
+anova(model1)
+DanielPlot(model1)
+MEPlot(model1)
+IAPlot(model1)
+
+lenth <- function(lmobj,alpha=0.05)
+{
+  abseffects <- abs(2*lmobj$coeff)[-1]
+  medabseffects <- median(abseffects)
+  medabseffects
+  s0 <- 1.5*medabseffects
+  keepeffects <- abseffects[abseffects< 2.5*s0]
+  PSE <- 1.5*median(keepeffects)
+  signlimit <-qt(1-alpha/2,length(abseffects)/3)*PSE
+  return(list("PSE"=PSE,"Signlimit"=signlimit,"Number of sign"=sum(abseffects>signlimit)))
+}
+
+lenthres <- lenth(model1)
+lenthres
+# see that factors with effects larger than lenthres$Signlimit should be assumed
+# to have effect different from zero
+effects <- 2*model1$coeff
+effects>lenthres$Signlimit
+
+# How to make a relatively ok Paretoplot for the effects
+barplot(sort(abs(effects[-1]),decreasing=FALSE),las=1,horiz=TRUE,cex.names=1.0)
+abline(v=lenthres$Signlimit,col=2,lwd=2)
+lenthres$Signlimit
+
+\end{lstlisting}
